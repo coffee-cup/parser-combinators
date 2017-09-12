@@ -1,4 +1,4 @@
-# parser--combinators
+# parser-combinators
 
 This repo contains some code I've used to learn about parser combinators.
 
