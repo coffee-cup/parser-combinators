@@ -10,7 +10,7 @@
     "build": "NODE_ENV=production babel src --out-dir lib",
     "test": "jest"
   },
-  "author": "Jake Runzer <=>",
+  "author": "Jake Runzer <jakerunzer@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "babel-runtime": "^6.26.0"
