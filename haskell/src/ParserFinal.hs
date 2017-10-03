@@ -33,7 +33,7 @@ instance MonadZero Parser where
 
 instance MonadPlus Parser where
   p ++ q = Parser (\inp -> parse p inp Prelude.++ parse q inp)
-  p +++ q = first (p Parser.++ q)
+  p +++ q = first (p ParserFinal.++ q)
 
 
 parse :: Parser a -> (String -> [(a, String)])
@@ -103,7 +103,7 @@ upper :: Parser Char
 upper = sat (\x -> 'A' <= x && x <= 'Z')
 
 letter :: Parser Char
-letter = lower Parser.++ upper
+letter = lower ParserFinal.++ upper
 
 alphanum :: Parser Char
 alphanum = letter +++ digit

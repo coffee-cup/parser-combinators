@@ -1,6 +1,10 @@
 module Main where
 
-import Lib
+import Control.Monad
+import CalculatorCoffee
 
 main :: IO ()
-main = someFunc
+main = forever $ do
+  putStr "> "
+  a <- getLine
+  print $ eval $ run a
