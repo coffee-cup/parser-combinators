@@ -19,7 +19,7 @@ eval ex = case ex of
 
 int :: Parser Expr
 int = do
-  n <- number
+  n <- token number
   return (Lit n)
 
 expr :: Parser Expr
@@ -32,7 +32,7 @@ factor :: Parser Expr
 factor = int <|> parens expr
 
 infixOp :: String -> (a -> a -> a) -> Parser (a -> a -> a)
-infixOp x f = reserved x >> return f
+infixOp x f = symbol x >> return f
 
 addop :: Parser (Expr -> Expr -> Expr)
 addop = infixOp "+" Add <|> infixOp "-" Sub

@@ -81,8 +81,26 @@ p `chainl1` op = do {a <- p; rest a}
 char :: Char -> Parser Char
 char c = satisfy (c ==)
 
+lower :: Parser Char
+lower = satisfy (\x -> 'a' <= x && x <= 'z')
+
+upper :: Parser Char
+upper = satisfy (\x -> 'A' <= x && x <= 'Z')
+
+letter :: Parser Char
+letter = lower <|> upper
+
+digit :: Parser Char
+digit = satisfy isDigit
+
+alphanum :: Parser Char
+alphanum = letter <|> digit
+
 natural :: Parser Integer
 natural = read <$> some (satisfy isDigit)
+
+word :: Parser String
+word = many letter
 
 string :: String -> Parser String
 string [] = return []
@@ -91,14 +109,23 @@ string (c:cs) = do {char c; string cs; return (c:cs)}
 token :: Parser a -> Parser a
 token p = do {a <- p; spaces; return a}
 
-reserved :: String -> Parser String
-reserved s = token (string s)
+symbol :: String -> Parser String
+symbol s = token (string s)
+
+ident :: Parser String
+ident = do
+  x <- lower
+  xs <- many alphanum
+  return (x:xs)
+
+identifier :: [String] -> Parser String
+identifier ks = do
+  x <- ident
+  return (x `notElem` ks)
+  return x
 
 spaces :: Parser String
 spaces = many $ oneOf " \n\r\t"
-
-digit :: Parser Char
-digit = satisfy isDigit
 
 number :: Parser Integer
 number = do
@@ -108,7 +135,7 @@ number = do
 
 parens :: Parser a -> Parser a
 parens m = do
-  reserved "("
+  symbol "("
   n <- m
-  reserved ")"
+  symbol ")"
   return n

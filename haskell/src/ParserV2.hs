@@ -163,7 +163,6 @@ junk = do {many (spaces +++ comment); return ()}
 apply :: Parser a -> String -> [(a, String)]
 apply p = parse (do {junk; p})
 
-
 -- Parse a token using parser p, throwing away any trailing space
 token :: Parser a -> Parser a
 token p = do {a <- p; spaces; return a}
